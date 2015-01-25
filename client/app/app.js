@@ -5,8 +5,14 @@ angular.module('espressoApp', [
   'ngResource',
   'ngSanitize',
   'ngRoute',
-  'ui.bootstrap'
+  'ui.sortable',
+  'ui.bootstrap',
+  'ui.bootstrap.modal',
+  'LocalStorageModule'
 ])
+  .config(['localStorageServiceProvider', function(localStorageServiceProvider){
+    localStorageServiceProvider.setPrefix('ls');
+  }])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .otherwise({
