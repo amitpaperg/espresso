@@ -1,28 +1,101 @@
-<div ng-include="'components/navbar/navbar.html'"></div>
-
-<header class="hero-unit" id="banner">
-  <div class="container">
-    <h1>'Allo, 'Allo!</h1>
-    <p class="lead">Kick-start your next web app with Angular Fullstack</p>
-    <img src="assets/images/yeoman.png" alt="I'm Yeoman">
-  </div>
-</header>
-
 <div class="container">
-  <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Features:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in awesomeThings">
-        <li><a href="#" tooltip="{{thing.info}}">{{thing.name}}</a></li>
+<!--  
+  <div class="header">
+    <div ng-show="user">
+      <span class="dropdown pull-right" dropdown on-toggle="toggled(open)">
+        <a href class="dropdown-toggle" dropdown-toggle>
+          <img class="login-image" src="{{user.picture}}"/>
+          <span class="login-name">{{user.name}}</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a href ng-click="signOut()">Sign Out</a>
+          </li>
+        </ul>
+      </span>
+    </div>
+    <a href><img class="icon-small-image" src="images/espresso.jpg" /></a>
+    <h3 class="text-muted">espresso</h3>
+  </div>
+-->
+  <div class="header">
+    <div ng-show="user">
+      <ul class="nav nav-pills pull-right">
+        <li class="login-name" title="{{user.email}}">{{user.name}}</li>
+        <li> <a href="#" title="{{user.name}} {{user.email}}"><img class="login-image" src="{{user.picture}}"/></a></li>
       </ul>
     </div>
+    <h3 class="text-muted">espresso</h3>
+  </div>
+
+  <div ng-show="!user" class="row">
+    <div class="col-md-12">
+      <h2 class="text-muted">Signup or Login to create bookmarks in espresso</h2>
+      <div google-signin 
+        client-id='533079327731-aa5j5bjh3hsdi06p6j288bb2oj85n6l8' 
+        after-signin="signedIn(oauth)"></div>
+    </div>
+  </div>
+
+  <!-- Add Pages Modal Dialog -->
+  <div ng-show="user" ng-controller="ModalDemoCtrl">
+      <!-- Web Pages List -->
+    <div id="links-container" ui-sortable="sortableOptions" ng-model="pages">
+      <div class="input-group link-block" ng-repeat="page in pages">
+        <div class="link-block-fill" ng-class="'{{page.category}}'">
+          <p class="link-button" >
+            <a href="{{page.link}}">
+              <span class="link-caption">{{page.caption}}</span>
+            </a>
+            <button class="btn btn-link btn-xs" ng-click="removePage($index)" aria-label=" Remove">X</button>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Pages Button -->
+    <p>
+      <button class="btn btn-lg btn-primary addLink-button" ng-click="open()" aria-label=" Add Link">+ Add Link</button>
+    </p>
+
+    <!-- TEMPORARY - Update Pages Button -->
+    <p>
+      <button class="btn btn-lg btn-primary addLink-button" ng-click="update()" aria-label=" Update Link">Update Link</button>
+    </p>
+
+    <script type="text/ng-template" id="AddPageModal.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Add Web Page</h3>
+        </div>
+        <div class="modal-body">
+            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+            <h5>URL:</h5>
+            <input type="text" ng-model="link" placeholder="http://nytimes.com" class="form-control">
+            <h5>Caption:</h5>
+            <input type="text" ng-model="caption" placeholder="NY Times" class="form-control">
+            <h5>Category:</h5>
+             <div class="btn-group" dropdown is-open="status.isopen" ng-model="categories">
+              <button type="button" class="btn category-dropdown" dropdown-toggle>
+                <div>
+                  <div class="{{selected.category}} category-color"></div>
+                  {{ selected.category }}
+                  <span class="caret"></span>
+                  </div>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li ng-repeat="choice in categories">
+                  <a href ng-click="changeCategory($index)">
+                    <div class="category-color" ng-class="'{{choice}}'"></div>
+                    {{choice}}
+                  </a>
+                </li>
+              </ul>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">Add</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
   </div>
 </div>
-
-<footer class="footer">
-  <div class="container">
-      <p>Angular Fullstack v2.0.13 |
-        <a href="https://twitter.com/tyhenkel">@tyhenkel</a> |
-         <a href="https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open">Issues</a></p>
-  </div>
-</footer>
