@@ -11,13 +11,12 @@
     "angular-cookies": ">=1.2.*",
     "angular-sanitize": ">=1.2.*",
     "angular-route": ">=1.2.*",
-    "angular-bootstrap": "~0.11.0",
+    "angular-bootstrap": "~0.12.0",
     "font-awesome": ">=4.1.0",
     "lodash": "~2.4.1",
     "angular-ui-sortable": "~0.13.3",
     "jquery-ui": "~1.11.2",
     "angular-local-storage": "~0.1.5",
-    "angular-ui-bootstrap": "~0.12.0",
     "aws-sdk": "~2.1.7"
   },
   "devDependencies": {

@@ -8,17 +8,20 @@ angular.module('espressoApp')
         $scope.user = user;
       });
     };
+
+    $scope.signOut = function() {
+      UserService.disconnectUser();
+      $scope.user = null;
+    };
+
+
   }])
   .controller('ModalDemoCtrl', ['$scope', '$modal', '$log', 'localStorageService', 'UserService', function ($scope, $modal, $log, localStorageService, UserService) {
-    //var pagesInStore = localStorageService.get('pages');
     var lastIDInStore = localStorageService.get('lastID');
     
     $scope.categories = ['News','Bills','India','Technology','Business','Entertainment','Blog','Other','Work'];
     $scope.prevSelectedCategory = null;
     $scope.lastID = lastIDInStore || 0;
-
-    // TODO - create a way to custom sort
-    // most likley this will have to inviolved watch on scope and secondary index in dynamo db
 
     $scope.removePage = function (index) {
       UserService.removePage($scope.pages[index])
@@ -26,6 +29,19 @@ angular.module('espressoApp')
         getPages();
       });
 
+    };
+
+    // TODO - create a way to custom sort
+    // most likley this will have to inviolved watch on scope and secondary index in dynamo db
+    $scope.sortableOptions = {
+      update: function(e, ui) {
+        // before update
+        var logEntry = "foo";
+      },
+      stop: function(e, ui) {
+        // this callback has the changed model
+        var logEntry = "bar";
+      }
     };
 
     $scope.$watch('lastID', function () {
@@ -40,6 +56,15 @@ angular.module('espressoApp')
     };
 
     getPages();
+
+    // TODO - REMOVE
+    $scope.update = function () {
+      var updatedPage = {'rank':1000,'caption': 'boo-updated','link':'http://www.boop.com','category':'Bills'};
+      UserService.updatePage(updatedPage)
+      .then(function(page) {
+        getPages();
+      });
+    };
 
     $scope.open = function (size) {
     	var modalInstance = $modal.open({
@@ -64,7 +89,6 @@ angular.module('espressoApp')
       var newPage = {'id':$scope.lastID,'caption':selectedItem.caption,'link':selectedItem.link,'category':selectedItem.category};
       UserService.uploadPage(newPage)
       .then(function(page) {
-        // TODO - page sort order
         getPages();
       });
 
